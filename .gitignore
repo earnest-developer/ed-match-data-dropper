@@ -1,5 +1,5 @@
 .idea/
 src/MatchData.Dropper/bin/
-test/MatchData.Dropper.Tests/bin/
 src/MatchData.Dropper/obj/
+test/MatchData.Dropper.Tests/bin/
 test/MatchData.Dropper.Tests/obj/
