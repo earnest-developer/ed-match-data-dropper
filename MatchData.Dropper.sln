@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchData.Dropper", "src\MatchData.Dropper\MatchData.Dropper.csproj", "{8F78DAF7-8597-4C55-A4EA-A0C18BC15CE3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchData.Dropper.Tests", "test\MatchData.Dropper.Tests\MatchData.Dropper.Tests.csproj", "{E2348BEF-2B03-4AD5-9692-E13B6AFA9AA5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8F78DAF7-8597-4C55-A4EA-A0C18BC15CE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F78DAF7-8597-4C55-A4EA-A0C18BC15CE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F78DAF7-8597-4C55-A4EA-A0C18BC15CE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F78DAF7-8597-4C55-A4EA-A0C18BC15CE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2348BEF-2B03-4AD5-9692-E13B6AFA9AA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2348BEF-2B03-4AD5-9692-E13B6AFA9AA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2348BEF-2B03-4AD5-9692-E13B6AFA9AA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2348BEF-2B03-4AD5-9692-E13B6AFA9AA5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
