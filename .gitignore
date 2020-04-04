@@ -1,4 +1,5 @@
-.idea/
+.idea
+.aws-sam
 src/MatchData.Dropper/bin/
 src/MatchData.Dropper/obj/
 test/MatchData.Dropper.Tests/bin/

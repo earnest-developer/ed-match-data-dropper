@@ -9,7 +9,7 @@ Globals:
     Timeout: 10
 
 Resources:
-  HelloWorldFunction:
+  MatchDataDropper:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: ./src/MatchData.Dropper/
@@ -34,7 +34,7 @@ Outputs:
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
   MatchDataDropperFunction:
     Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt MatchDataDropperFunction.Arn
+    Value: !GetAtt MatchDataDropper.Arn
   MatchDataDropperFunctionIamRole:
     Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt MatchDataDropperFunctionRole.Arn
+    Value: !GetAtt MatchDataDropperRole.Arn
