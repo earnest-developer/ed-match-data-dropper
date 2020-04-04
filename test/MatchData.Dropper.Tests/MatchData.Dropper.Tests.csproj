@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RootNamespace>MatchData.Dropper.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,11 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\HelloWorld\HelloWorld.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="obj\Debug\netcoreapp2.1" />
+    <ProjectReference Include="..\..\src\MatchData.Dropper\MatchData.Dropper.csproj" />
   </ItemGroup>
 
 </Project>

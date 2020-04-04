@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Net.Http;
+using System.Threading.Tasks;
+using Amazon.Lambda.APIGatewayEvents;
+using Amazon.Lambda.TestUtilities;
 using Newtonsoft.Json;
 using Xunit;
-using Amazon.Lambda.TestUtilities;
-using Amazon.Lambda.APIGatewayEvents;
 
-namespace HelloWorld.Tests
+namespace MatchData.Dropper.Tests
 {
   public class FunctionTest
   {

@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld", "src\HelloWorld\HelloWorld.csproj", "{933932B3-8AEC-4E7E-B1A5-2A3FC2BCB76B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchData.Dropper", "src\MatchData.Dropper\MatchData.Dropper.csproj", "{933932B3-8AEC-4E7E-B1A5-2A3FC2BCB76B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld.Tests", "test\HelloWorld.Test\HelloWorld.Tests.csproj", "{1CD3F024-074B-493A-A3D1-505C3527B88C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchData.Dropper.Tests", "test\MatchData.Dropper.Tests\MatchData.Dropper.Tests.csproj", "{1CD3F024-074B-493A-A3D1-505C3527B88C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4854F1FA-D7F6-4689-A037-CDBBF07DD52E}"
 ProjectSection(SolutionItems) = preProject
