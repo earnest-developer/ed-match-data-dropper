@@ -40,7 +40,7 @@ namespace MatchData.Dropper
 
             return new APIGatewayProxyResponse
             {
-                Body = JsonConvert.SerializeObject(body),
+                Body = JsonConvert.SerializeObject(apigProxyEvent),
                 StatusCode = 200,
                 Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
             };
