@@ -1,40 +1,44 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  Sample SAM Template for AWS
+  SAM template for the MatchData.Dropper serverless application. Spins up a Lambda that receives events from an S3 Bucket.
 
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
-Globals:
+Globals: # https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
   Function:
-    Timeout: 10
+    Runtime: dotnetcore2.1
+    Timeout: 30
+    Environment: # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+      Variables:
+        PARAM1: VALUE
 
-Resources:
+Resources: # Implicitly generated resources https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#s3
+  MatchDataBucket:
+    Type: AWS::S3::Bucket
   MatchDataDropper:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function # Creates a Lambda function, role and event source mappings https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: ./src/MatchData.Dropper/
       Handler: MatchData.Dropper::MatchData.Dropper.Function::FunctionHandler
-      Runtime: dotnetcore2.1
-      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
-        Variables:
-          PARAM1: VALUE
-      Events:
-        HelloWorld:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+      Policies:
+        - AWSLambdaExecute # Managed Policy
+        - Version: '2012-10-17' # Policy Document
+          Statement:
+            - Effect: Allow
+              Action:
+                - s3:GetObject
+                - s3:GetObjectACL
+              Resource: '*'
+      Events: # Define events that trigger this function
+        MatchDataCSVUpload:
+          Type: S3 # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#event-source-types
           Properties:
-            Path: /hello
-            Method: get
-
-Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  MatchDataDropperApi:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  MatchDataDropperFunction:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt MatchDataDropper.Arn
-  MatchDataDropperFunctionIamRole:
-    Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt MatchDataDropperRole.Arn
+            Bucket: !Ref MatchDataBucket # bucket must be created in the same template
+            Events: s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: suffix
+                    Value: .csv
+      Tags:
+        AppNameTag: ThumbnailApp
+        DepartmentNameTag: ThumbnailDepartment

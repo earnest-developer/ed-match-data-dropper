@@ -1,57 +1,63 @@
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
-using Amazon.Lambda.APIGatewayEvents;
-using Amazon.Lambda.TestUtilities;
-using Newtonsoft.Json;
+using Amazon;
+using Amazon.Lambda.S3Events;
+using Amazon.S3;
+using Amazon.S3.Model;
+using Amazon.S3.Util;
 using Xunit;
 
 namespace MatchData.Dropper.Tests
 {
-  public class FunctionTest
-  {
-    private static readonly HttpClient client = new HttpClient();
-
-    private static async Task<string> GetCallingIP()
+    public class FunctionTest
     {
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Add("User-Agent", "AWS Lambda .Net Client");
+        [Fact]
+        public async Task TestS3EventLambdaFunction()
+        {
+            IAmazonS3 s3Client = new AmazonS3Client(RegionEndpoint.USWest2);
 
-            var stringTask = client.GetStringAsync("http://checkip.amazonaws.com/").ConfigureAwait(continueOnCapturedContext:false);
+            var bucketName = "lambda-LambdaSimpleS3Function-".ToLower() + DateTime.Now.Ticks;
+            var key = "text.txt";
 
-            var msg = await stringTask;
-            return msg.Replace("\n","");
+            // Create a bucket an object to setup a test data.
+            await s3Client.PutBucketAsync(bucketName);
+            try
+            {
+                await s3Client.PutObjectAsync(new PutObjectRequest
+                {
+                    BucketName = bucketName,
+                    Key = key,
+                    ContentBody = "sample data"
+                });
+
+                // Setup the S3 event object that S3 notifications would create with the fields used by the Lambda function.
+                var s3Event = new S3Event
+                {
+                    Records = new List<S3EventNotification.S3EventNotificationRecord>
+                    {
+                        new S3EventNotification.S3EventNotificationRecord
+                        {
+                            S3 = new S3EventNotification.S3Entity
+                            {
+                                Bucket = new S3EventNotification.S3BucketEntity {Name = bucketName},
+                                Object = new S3EventNotification.S3ObjectEntity {Key = key}
+                            }
+                        }
+                    }
+                };
+
+                // Invoke the lambda function and confirm the content type was returned.
+                var function = new Function(s3Client);
+                var contentType = await function.FunctionHandler(s3Event, null);
+
+                Assert.Equal("text/plain", contentType);
+            }
+            finally
+            {
+                // Clean up the test data
+                await AmazonS3Util.DeleteS3BucketWithObjectsAsync(s3Client, bucketName);
+            }
+        }
     }
-
-    [Fact]
-    public async Task TestHelloWorldFunctionHandler()
-    {
-            // var request = new APIGatewayProxyRequest();
-            // var context = new TestLambdaContext();
-            // string location = GetCallingIP().Result;
-            // Dictionary<string, string> body = new Dictionary<string, string>
-            // {
-            //     { "message", "hello world" },
-            //     { "location", location },
-            // };
-            //
-            // var expectedResponse = new APIGatewayProxyResponse
-            // {
-            //     Body = JsonConvert.SerializeObject(body),
-            //     StatusCode = 200,
-            //     Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
-            // };
-            //
-            // var function = new Function();
-            // var response = await function.FunctionHandler(request, context);
-            //
-            // Console.WriteLine("Lambda Response: \n" + response.Body);
-            // Console.WriteLine("Expected Response: \n" + expectedResponse.Body);
-            //
-            // Assert.Equal(expectedResponse.Body, response.Body);
-            // Assert.Equal(expectedResponse.Headers, response.Headers);
-            // Assert.Equal(expectedResponse.StatusCode, response.StatusCode);
-    }
-  }
 }
