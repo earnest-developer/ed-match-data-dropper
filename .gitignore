@@ -3,3 +3,8 @@ src/MatchData.Dropper/bin/
 src/MatchData.Dropper/obj/
 test/MatchData.Dropper.Tests/bin/
 test/MatchData.Dropper.Tests/obj/
+
+src/HelloWorld/bin/
+src/HelloWorld/obj/
+test/HelloWorld.Tests/bin/
+test/HelloWorld.Tests/obj/
