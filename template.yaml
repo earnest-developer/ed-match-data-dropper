@@ -2,6 +2,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
   SAM template for the MatchData.Dropper serverless application. Spins up a Lambda that receives events from an S3 Bucket.
+  It registers itself in an existing VPC in order to use a database.
 
 Globals: # https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
   Function:
@@ -9,7 +10,7 @@ Globals: # https://github.com/awslabs/serverless-application-model/blob/master/d
     Timeout: 30
     Environment: # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
       Variables:
-        PARAM1: VALUE
+        MYSQL_CONNECTION_STRING: 'override_connection_string' # TODO: Move to secrets manager
 
 Resources: # Implicitly generated resources https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#s3
   MatchDataBucket:
@@ -20,19 +21,20 @@ Resources: # Implicitly generated resources https://github.com/awslabs/serverles
       CodeUri: ./src/MatchData.Dropper/
       Handler: MatchData.Dropper::MatchData.Dropper.Function::FunctionHandler
       Policies:
+        - AWSLambdaVPCAccessExecutionRole # Managed Policy
         - AWSLambdaExecute # Managed Policy
-        - Version: '2012-10-17' # Policy Document
-          Statement:
-            - Effect: Allow
-              Action:
-                - s3:GetObject
-                - s3:GetObjectACL
-              Resource: '*'
+      VpcConfig: # TODO: Move to parameters
+        SecurityGroupIds:
+          - sg-65ca6405
+        SubnetIds:
+          - subnet-dca67590
+          - subnet-ddc283b4
+          - subnet-547bf62e
       Events: # Define events that trigger this function
         MatchDataCSVUpload:
           Type: S3 # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#event-source-types
           Properties:
-            Bucket: !Ref MatchDataBucket # bucket must be created in the same template
+            Bucket: !Ref MatchDataBucket # Bucket must be created in the same template
             Events: s3:ObjectCreated:*
             Filter:
               S3Key:
@@ -40,5 +42,4 @@ Resources: # Implicitly generated resources https://github.com/awslabs/serverles
                   - Name: suffix
                     Value: .csv
       Tags:
-        AppNameTag: ThumbnailApp
-        DepartmentNameTag: ThumbnailDepartment
+        project: ed-sports-betting

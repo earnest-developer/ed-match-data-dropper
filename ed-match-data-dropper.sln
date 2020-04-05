@@ -10,6 +10,7 @@ ProjectSection(SolutionItems) = preProject
 	.gitignore = .gitignore
 	template.yaml = template.yaml
 	events\event.json = events\event.json
+	samconfig.toml = samconfig.toml
 EndProjectSection
 EndProject
 Global
